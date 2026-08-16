@@ -1,17 +1,17 @@
 import java.awt.Point;
 
 abstract class Plant {
-    private static final int SEED = 0;
-    private static final int SEEDLING = 1;
-    private static final int JUVENILE = 2;
-    private static final int ADULT = 3;
-    private static final int BLOOMING = 4;
-    private static final int DEAD = 5;
+    static final int SEED = 0;
+    static final int SEEDLING = 1;
+    static final int JUVENILE = 2;
+    static final int ADULT = 3;
+    static final int BLOOMING = 4;
+    static final int DEAD = 5;
 
-    private double spreadRadius;        //How far a plant can spread it's seeds
-    private int spreadNum;              //Max number of seeds a plant can produce
-    private int growthState;
-    private Point position;
+    int spreadRadius;        //How far a plant can spread it's seeds
+    int spreadNum;              //Max number of seeds a plant can produce
+    int growthState;
+    Point position;
 
     //Progress the lifespan of the plant
     void grow() {
@@ -27,12 +27,8 @@ abstract class Plant {
         return growthState == DEAD;
     }
 
-    //To be completed
     //Disperse seeds around this plant
-    void spread() {
-        Radius range = new Radius(position, spreadRadius);
-        Math.random();
-    }
+    abstract Plant[] spread();
 
     Point getPosition() {
         return position;

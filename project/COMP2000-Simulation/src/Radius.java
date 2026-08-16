@@ -1,21 +1,24 @@
 import java.awt.Point;
 
 public class Radius {
-    double minX;
-    double maxX;
-    double minY;
-    double maxY;
+    int minX;
+    int maxX;
+    int minY;
+    int maxY;
 
-    Radius(Point center, double radius) {
-        minX = center.getX() - radius;
-        maxX = center.getX() + radius;
+    Radius(Point center, int radius) {
+        minX = (int) center.getX() - radius;
+        maxX = (int) center.getX() + radius;
 
-        minY = center.getY() - radius;
-        maxY = center.getY() + radius;
+        minY = (int) center.getY() - radius;
+        maxY = (int) center.getY() + radius;
     }
 
     //To be completed
     Point getRandomPoint() {
-        return new Point(0, 0);
+        int x = (int) ((Math.random() * (maxX - minX)) + minX);
+        int y = (int) ((Math.random() * (maxY - minY)) + minY);
+        
+        return new Point(x, y);
     }
 }
