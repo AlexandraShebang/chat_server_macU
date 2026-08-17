@@ -1,34 +1,42 @@
 import java.awt.Point;
 
-abstract class Plant {
+abstract class Plant implements Growable {
     static final int SEED = 0;
     static final int SEEDLING = 1;
     static final int JUVENILE = 2;
     static final int ADULT = 3;
-    static final int BLOOMING = 4;
-    static final int DEAD = 5;
+    static final int DEAD = 4;
 
-    int spreadRadius;        //How far a plant can spread it's seeds
-    int spreadNum;              //Max number of seeds a plant can produce
+
+    
     int growthState;
     Point position;
 
+    final int spreadNum;        //Max number of seeds a plant can produce
+    final int lifespan;
+    final int spreadRadius;     //How far a plant can spread its seeds
+
+    Plant() {
+        //These numbers are all arbitrary placeholders for now
+        spreadNum = 10;
+        spreadRadius = 10;
+        lifespan = 10;
+    }
+
     //Progress the lifespan of the plant
-    void grow() {
+    public void grow() {
         growthState++;
+        Math.clamp(growthState, SEED, DEAD);
     }
 
     //Kill the this plant
-    void die() {
+    public void die() {
         growthState = DEAD;
     }
 
     public boolean isDead() {
         return growthState == DEAD;
     }
-
-    //Disperse seeds around this plant
-    abstract Plant[] spread();
 
     Point getPosition() {
         return position;
