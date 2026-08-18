@@ -6,15 +6,13 @@ abstract class Plant implements Growable {
     static final int JUVENILE = 2;
     static final int ADULT = 3;
     static final int DEAD = 4;
-
-
     
     int growthState;
     Point position;
 
-    final int spreadNum;        //Max number of seeds a plant can produce
-    final int lifespan;
-    final int spreadRadius;     //How far a plant can spread its seeds
+    int spreadNum;        //Max number of seeds a plant can produce
+    int lifespan;
+    int spreadRadius;     //How far a plant can spread its seeds
 
     Plant() {
         //These numbers are all arbitrary placeholders for now

@@ -6,6 +6,12 @@ public class Sunflower extends Flower{
         this.position = position;
     }
 
+    Sunflower(Point position, int spreadRadius, int lifespan) {
+        this.position = position;
+        this.spreadRadius = spreadRadius;
+        this.lifespan = lifespan;
+    }
+
     @Override
     public void bloom() {
 
