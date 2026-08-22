@@ -19,7 +19,7 @@ public class Sky extends JPanel{
         weatherState = SUNNY;
         timeState = DAWN;
         this.setBackground(new Color(140,200,255));
-        this.setBounds(0,0,1600,300);
+        this.setBounds(0,0,Window.WIN_WIDTH,Window.WIN_HEIGHT/4);
     }
 
     public void changeWeather(int newWeather) {
