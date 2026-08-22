@@ -1,4 +1,7 @@
-public class Sky {
+import java.awt.Color;
+import javax.swing.JPanel;
+
+public class Sky extends JPanel{
     public static final int SUNNY = 0;
     public static final int CLOUDY = 1;
     public static final int OVERCAST = 2;
@@ -15,6 +18,8 @@ public class Sky {
     public Sky() {
         weatherState = SUNNY;
         timeState = DAWN;
+        this.setBackground(new Color(140,200,255));
+        this.setBounds(0,0,1600,300);
     }
 
     public void changeWeather(int newWeather) {
