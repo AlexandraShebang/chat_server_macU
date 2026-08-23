@@ -1,10 +1,12 @@
-import java.awt.Color;
+import java.awt.*;
 import javax.swing.*;
 
-public class Ground extends JLayeredPane{
+public class Ground extends JPanel{
     Ground() {
-        this.setOpaque(true);
-        this.setBackground(new Color(140,250,100));
-        this.setBounds(0,Window.WIN_HEIGHT/4,Window.WIN_WIDTH,Window.WIN_HEIGHT);
+
+        //Currently the Ground is the whole size of the window and the sky goes over it
+        this.setPreferredSize(new Dimension(Window.WIN_WIDTH, Window.WIN_HEIGHT));
+        //this.setBounds(0, Window.WIN_WIDTH/4, Window.WIN_WIDTH, Window.WIN_HEIGHT/4*3);
+        this.setBackground(Color.BLACK);
     }
 }

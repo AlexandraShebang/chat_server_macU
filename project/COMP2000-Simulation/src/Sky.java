@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.*;
 import javax.swing.JPanel;
 
 public class Sky extends JPanel{
@@ -20,6 +20,7 @@ public class Sky extends JPanel{
         timeState = DAWN;
         this.setBackground(new Color(140,200,255));
         this.setBounds(0,0,Window.WIN_WIDTH,Window.WIN_HEIGHT/4);
+        //this.setPreferredSize(new Dimension(Window.WIN_WIDTH, Window.WIN_HEIGHT/4));
     }
 
     public void changeWeather(int newWeather) {
