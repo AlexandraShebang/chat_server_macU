@@ -8,16 +8,21 @@ public class Window extends JFrame{
     public static int WIN_WIDTH = 1600;
     public static int WIN_HEIGHT = 1200;
 
-    Window() {
-        Sky sky = new Sky();
-        Ground ground = new Ground();
+    Sky sky;
+    Ground ground;
 
+    Window() {
+        sky = new Sky();
+        ground = new Ground();
+
+        //Basic window props
         this.setTitle("GAASK Plant Simulation COMP2000");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //Exit appliction when x pressed
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new GridBagLayout());
 
+        //Keep the main sky and ground in a single column
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth=GridBagConstraints.REMAINDER;
         c.fill=GridBagConstraints.HORIZONTAL;
@@ -28,5 +33,11 @@ public class Window extends JFrame{
         this.pack();
 
         this.setVisible(true);
+    }
+
+    //Sky will deal with it's own components, so anything added to the window 
+    //must be added to the ground.
+    public void addToGround(Component comp, Object constraints) {
+        ground.add(comp, constraints);
     }
 }
