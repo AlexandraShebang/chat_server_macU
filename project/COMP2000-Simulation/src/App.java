@@ -1,3 +1,4 @@
+import java.awt.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -8,5 +9,9 @@ public class App {
 
         window.add(sky);
         window.add(ground);
+
+        Sunflower sf = new Sunflower(new Point(80, 40), 80);
+        ground.add(sf);
+
     }
 }

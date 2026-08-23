@@ -1,6 +1,7 @@
-import java.awt.Point;
+import java.awt.*;
+import javax.swing.*;
 
-abstract class Plant implements Growable {
+abstract class Plant extends JPanel implements Growable {
     static final int SEED = 0;
     static final int SEEDLING = 1;
     static final int JUVENILE = 2;
@@ -11,14 +12,19 @@ abstract class Plant implements Growable {
     Point position;
 
     int spreadNum;        //Max number of seeds a plant can produce
-    int lifespan;
+    int lifespan;         //How long a plant lives in seconds
     int spreadRadius;     //How far a plant can spread its seeds
+    long startTime;       //When a plant was created
 
-    Plant() {
+    Plant(Point p, int size) {
         //These numbers are all arbitrary placeholders for now
         spreadNum = 10;
         spreadRadius = 10;
         lifespan = 10;
+        startTime = System.nanoTime();
+
+        this.setBounds(p.x-size/2, p.y-size/2, size, size);
+        this.setBackground(Color.darkGray);
     }
 
     //Progress the lifespan of the plant

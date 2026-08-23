@@ -13,6 +13,7 @@ public class Window extends JFrame{
         this.setResizable(false);
         this.setLayout(null);
         this.setSize(WIN_WIDTH,WIN_HEIGHT);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 }
