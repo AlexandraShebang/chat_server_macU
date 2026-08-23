@@ -1,4 +1,5 @@
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
 public class Window extends JFrame{
     //Window of the application
@@ -15,9 +16,14 @@ public class Window extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //Exit appliction when x pressed
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        this.setLayout(new GridBagLayout());
 
-        this.add(sky);
-        this.add(ground);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth=GridBagConstraints.REMAINDER;
+        c.fill=GridBagConstraints.HORIZONTAL;
+
+        this.add(sky,c);
+        this.add(ground,c);
         
         this.pack();
 
