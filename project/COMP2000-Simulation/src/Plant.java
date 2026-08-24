@@ -8,7 +8,7 @@ abstract class Plant extends JPanel implements Growable {
     static final int ADULT = 3;
     static final int DEAD = 4;
     
-    int growthState;
+    int growthState = SEED;
     Point position;
 
     int spreadNum;        //Max number of seeds a plant can produce
@@ -23,19 +23,23 @@ abstract class Plant extends JPanel implements Growable {
         lifespan = 10;
         startTime = System.nanoTime();
 
+        this.position = p;
+
         this.setBounds(p.x-size/2, p.y-size/2, size, size);
         this.setBackground(Color.darkGray);
     }
 
     //This is called every iteration of the main loop
     public void tick() {
+        grow();
 
     }
 
     //Progress the lifespan of the plant
     public void grow() {
-        growthState++;
-        Math.clamp(growthState, SEED, DEAD);
+        if (growthState < DEAD){
+            growthState++;
+        }
     }
 
     //Kill the this plant
