@@ -5,9 +5,8 @@ public class Window extends JFrame{
     //Window of the application
     //Defines screenspace
 
-    public static int WIN_WIDTH = 1600;
-    public static int WIN_HEIGHT = 1200;
-
+    public static int WIN_WIDTH = 800;
+    public static int WIN_HEIGHT = 600;
     Sky sky;
     Ground ground;
 
@@ -21,6 +20,8 @@ public class Window extends JFrame{
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new GridBagLayout());
+
+        //this.setBounds(0, 0, Window.WIN_WIDTH, Window.WIN_HEIGHT);
 
         //Keep the main sky and ground in a single column
         GridBagConstraints c = new GridBagConstraints();
