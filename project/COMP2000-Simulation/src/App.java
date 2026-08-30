@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -11,19 +9,22 @@ public class App {
         Sunflower sf = new Sunflower(new Point(50, 50), 80);
         window.addToGround(sf, null);
 
+        /* Moved timer into plant class for now, since its hard to iterate through
+            all plants in a frame
         Timer timer = new Timer();
         TimerTask task = new TimerTask(){
             @Override
             public void run(){
                 //Put methods to call each frame here
                 //This is just an example
-                sf.tick();
-                System.out.println("Tick!");
+                //sf.tick();
+                //System.out.println("Tick!");
             }
         };
+        */
 
         
         
-        timer.schedule(task, delay, delay);
+        //timer.schedule(task, delay, delay);
     }
 }

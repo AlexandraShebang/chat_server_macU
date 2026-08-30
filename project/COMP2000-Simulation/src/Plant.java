@@ -14,25 +14,34 @@ abstract class Plant extends JPanel implements Growable {
     Point position;
 
     int spreadNum;        //Max number of seeds a plant can produce
-    int growthDelay;         //How long between growth states in milliseconds
+    int growthDelay;      //How long between growth states in milliseconds
     int spreadRadius;     //How far a plant can spread its seeds
-    Timer timer;
-
+    Timer growthTimer;
+    Timer tickTimer;
 
     Plant(Point p, int size) {
         //These numbers are all arbitrary placeholders for now
         spreadNum = 10;
         spreadRadius = 10;
         growthDelay = 5000;
-        timer = new Timer();
-        TimerTask task = new TimerTask() {
+        growthTimer = new Timer();
+        tickTimer = new Timer();
+        TimerTask grow = new TimerTask() {
             @Override
             public void run() {
                 grow();
             }
         };
 
-        timer.schedule(task, growthDelay, growthDelay);
+        TimerTask tick = new TimerTask() {
+            @Override
+            public void run() {
+                tick();
+            }
+        };
+
+        growthTimer.schedule(grow, growthDelay, growthDelay);
+        growthTimer.schedule(tick, 25, 25);
 
         this.position = p;
 
