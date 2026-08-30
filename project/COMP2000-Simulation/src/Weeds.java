@@ -4,9 +4,8 @@ import java.awt.*;
 public class Weeds extends Plant{
     int size;
 
-    Weeds(Point position, int size){
-        super(position, size);
-        this.size = size;
+    Weeds(Point position, Window window){
+        super(position, window);
         this.position = position;
         this.setBackground(Color.darkGray);
     }
