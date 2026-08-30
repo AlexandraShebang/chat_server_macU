@@ -6,7 +6,7 @@ public class App {
 
         int delay = 50; //Refresh 20 times per second
 
-        Sunflower sf = new Sunflower(new Point(200, 200), 80, window);
+        Sunflower sf = new Sunflower(new Point(200, 200), 60, window);
         //window.addToGround(sf, null);
 
         /* Moved timer into plant class for now, since its hard to iterate through

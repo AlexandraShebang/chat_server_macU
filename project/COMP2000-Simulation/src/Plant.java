@@ -76,6 +76,8 @@ abstract class Plant extends JPanel implements Growable {
             case DEAD:
                 this.setBackground(Color.BLACK);
                 deadAction();
+                window.removeFromGround(this);
+                window.refresh();
                 break;
         }
     }

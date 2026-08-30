@@ -41,4 +41,13 @@ public class Window extends JFrame{
     public void addToGround(Component comp, Object constraints) {
         ground.add(comp, constraints);
     }
+
+    public void removeFromGround(Component comp) {
+        ground.remove(comp);
+    }
+
+    public void refresh() {
+        ground.revalidate();
+        ground.repaint();
+    }
 }
