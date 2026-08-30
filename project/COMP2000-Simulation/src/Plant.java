@@ -31,8 +31,9 @@ abstract class Plant extends JPanel implements Growable {
 
     //This is called every iteration of the main loop
     public void tick() {
-        grow();
-
+        //grow();
+        position.x+=10;
+        this.setLocation(position.x, position.y);
     }
 
     //Progress the lifespan of the plant
