@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.*;
 
 abstract class Plant extends JPanel implements Growable {
@@ -12,16 +14,25 @@ abstract class Plant extends JPanel implements Growable {
     Point position;
 
     int spreadNum;        //Max number of seeds a plant can produce
-    int lifespan;         //How long a plant lives in seconds
+    int growthDelay;         //How long between growth states in milliseconds
     int spreadRadius;     //How far a plant can spread its seeds
-    long startTime;       //When a plant was created
+    Timer timer;
+
 
     Plant(Point p, int size) {
         //These numbers are all arbitrary placeholders for now
         spreadNum = 10;
         spreadRadius = 10;
-        lifespan = 10;
-        startTime = System.nanoTime();
+        growthDelay = 5000;
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                grow();
+            }
+        };
+
+        timer.schedule(task, growthDelay, growthDelay);
 
         this.position = p;
 
@@ -31,9 +42,23 @@ abstract class Plant extends JPanel implements Growable {
 
     //This is called every iteration of the main loop
     public void tick() {
-        //grow();
-        position.x+=10;
-        this.setLocation(position.x, position.y);
+        switch(growthState) {
+            case SEED:
+                this.setBackground(new Color(79, 46, 9));
+                break;
+            case SEEDLING:
+                this.setBackground(new Color(2, 184, 9));
+                break;
+            case JUVENILE:
+                this.setBackground(new Color(1, 120, 5));
+                break;
+            case ADULT:
+                this.setBackground(new Color(1, 71, 4));
+                break;
+            case DEAD:
+                this.setBackground(Color.BLACK);
+                break;
+        }
     }
 
     //Progress the lifespan of the plant
