@@ -4,20 +4,13 @@ import java.awt.Point;
 public class Sunflower extends Flower{
     //int size;
 
-    Sunflower(Point position, int size, Window window) {
-        super(position, size, window);
-        this.size = size;
+    Sunflower(Point position, Window window) {
+        super(position, window);
         this.position = position;
-        this.setBackground(Color.yellow);
-    }
 
-    /*
-    Sunflower(Point position, int spreadRadius, int lifespan) {
-        this.position = position;
-        this.spreadRadius = spreadRadius;
-        this.lifespan = lifespan;
+        //Check if very close to another plant. If so, immediately die.
+        //TODO
     }
-    */
 
     @Override
     public void bloom() {
@@ -53,7 +46,7 @@ public class Sunflower extends Flower{
         Sunflower[] children = new Sunflower[spreadNum];
         for(int i = 0; i < spreadNum; i++) {
             Point newPoint = radius.getRandomPoint();
-            children[i] = new Sunflower(newPoint, size, window);    //Will immediately go out of scope for now
+            children[i] = new Sunflower(newPoint, window);    //Will immediately go out of scope for now
         }
     }
 }

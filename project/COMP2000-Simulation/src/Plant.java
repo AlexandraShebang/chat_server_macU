@@ -11,7 +11,7 @@ abstract class Plant extends JPanel implements Growable {
     static final int DEAD = 4;
     
     int growthState = SEED;
-    int size;
+    int size = 60;
     Point position;
 
     int spreadNum;        //Max number of seeds a plant can produce
@@ -20,10 +20,9 @@ abstract class Plant extends JPanel implements Growable {
     Window window;
     Timer timer;
 
-    Plant(Point p, int size, Window window) {
+    Plant(Point p, Window window) {
         //These numbers are all arbitrary placeholders for now
         this.window = window;
-        this.size = size;
         spreadNum = 2;
         spreadRadius = 100;
         growthDelay = 5000;
@@ -52,7 +51,8 @@ abstract class Plant extends JPanel implements Growable {
         window.addToGround(this, null);
     }
 
-    //This is called every iteration of the main loop
+    //All plants will have these stages. The ___Action() methods allow each phase
+    //to be customised per specific plant.
     public void tick() {
         switch(growthState) {
             case SEED:
@@ -94,15 +94,6 @@ abstract class Plant extends JPanel implements Growable {
     abstract void juvenileAction();
     abstract void adultAction();
     abstract void deadAction();
-
-    //Kill the this plant
-    public void die() {
-        growthState = DEAD;
-    }
-
-    public boolean isDead() {
-        return growthState == DEAD;
-    }
 
     Point getPosition() {
         return position;

@@ -1,8 +1,8 @@
 import java.awt.*;
 
 abstract class Flower extends Plant {
-    Flower(Point p, int size, Window window) {
-        super(p, size, window);
+    Flower(Point p, Window window) {
+        super(p, window);
     }
 
     public void bloom(){    //Display the flower blooming

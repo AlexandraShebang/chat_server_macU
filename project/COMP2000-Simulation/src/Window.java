@@ -7,8 +7,8 @@ public class Window extends JFrame{
 
     public static int WIN_WIDTH = 800;
     public static int WIN_HEIGHT = 600;
-    Sky sky;
-    Ground ground;
+    private Sky sky;
+    private Ground ground;
 
     Window() {
         sky = new Sky();
@@ -20,8 +20,6 @@ public class Window extends JFrame{
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new GridBagLayout());
-
-        //this.setBounds(0, 0, Window.WIN_WIDTH, Window.WIN_HEIGHT);
 
         //Keep the main sky and ground in a single column
         GridBagConstraints c = new GridBagConstraints();
