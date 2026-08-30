@@ -6,8 +6,8 @@ public class App {
 
         int delay = 50; //Refresh 20 times per second
 
-        Sunflower sf = new Sunflower(new Point(50, 50), 80);
-        window.addToGround(sf, null);
+        Sunflower sf = new Sunflower(new Point(200, 200), 80, window);
+        //window.addToGround(sf, null);
 
         /* Moved timer into plant class for now, since its hard to iterate through
             all plants in a frame
@@ -22,8 +22,6 @@ public class App {
             }
         };
         */
-
-        
         
         //timer.schedule(task, delay, delay);
     }

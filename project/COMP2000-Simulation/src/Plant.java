@@ -11,21 +11,23 @@ abstract class Plant extends JPanel implements Growable {
     static final int DEAD = 4;
     
     int growthState = SEED;
+    int size;
     Point position;
 
     int spreadNum;        //Max number of seeds a plant can produce
     int growthDelay;      //How long between growth states in milliseconds
     int spreadRadius;     //How far a plant can spread its seeds
-    Timer growthTimer;
-    Timer tickTimer;
+    Window window;
+    Timer timer;
 
-    Plant(Point p, int size) {
+    Plant(Point p, int size, Window window) {
         //These numbers are all arbitrary placeholders for now
-        spreadNum = 10;
-        spreadRadius = 10;
+        this.window = window;
+        this.size = size;
+        spreadNum = 2;
+        spreadRadius = 100;
         growthDelay = 5000;
-        growthTimer = new Timer();
-        tickTimer = new Timer();
+        timer = new Timer();
         TimerTask grow = new TimerTask() {
             @Override
             public void run() {
@@ -40,13 +42,14 @@ abstract class Plant extends JPanel implements Growable {
             }
         };
 
-        growthTimer.schedule(grow, growthDelay, growthDelay);
-        growthTimer.schedule(tick, 25, 25);
+        timer.schedule(grow, growthDelay, growthDelay);
+        timer.schedule(tick, 25, 25);
 
         this.position = p;
 
-        this.setBounds(p.x-size/2, p.y-size/2, size, size);
+        this.setBounds(p.x-size/8, p.y-size/8, size/4, size/4);
         this.setBackground(Color.darkGray);
+        window.addToGround(this, null);
     }
 
     //This is called every iteration of the main loop
@@ -54,18 +57,25 @@ abstract class Plant extends JPanel implements Growable {
         switch(growthState) {
             case SEED:
                 this.setBackground(new Color(79, 46, 9));
+                seedAction();
                 break;
             case SEEDLING:
                 this.setBackground(new Color(2, 184, 9));
+                seedlingAction();
                 break;
             case JUVENILE:
+                this.setBounds(position.x-size/4, position.y-size/4, size/2, size/2);
                 this.setBackground(new Color(1, 120, 5));
+                juvenileAction();
                 break;
             case ADULT:
+                this.setBounds(position.x-size/2, position.y-size/2, size, size);
                 this.setBackground(new Color(1, 71, 4));
+                adultAction();
                 break;
             case DEAD:
                 this.setBackground(Color.BLACK);
+                deadAction();
                 break;
         }
     }
@@ -76,6 +86,12 @@ abstract class Plant extends JPanel implements Growable {
             growthState++;
         }
     }
+
+    abstract void seedAction();
+    abstract void seedlingAction();
+    abstract void juvenileAction();
+    abstract void adultAction();
+    abstract void deadAction();
 
     //Kill the this plant
     public void die() {

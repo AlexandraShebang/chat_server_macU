@@ -1,9 +1,20 @@
 import java.awt.*;
 
 abstract class Flower extends Plant {
-    Flower(Point p, int size) {
-        super(p, size);
+    Flower(Point p, int size, Window window) {
+        super(p, size, window);
     }
 
-    abstract void bloom();  //Display the flower blooming
+    public void bloom(){    //Display the flower blooming
+        this.setBackground(Color.RED);
+        if ((int) (Math.random() * 100) == 0) {
+            spread();
+        }
+    }  
+
+    //Flowers will always bloom when they are adults
+    @Override
+    public void adultAction() {
+        bloom();
+    }
 }

@@ -2,10 +2,10 @@ import java.awt.Color;
 import java.awt.Point;
 
 public class Sunflower extends Flower{
-    int size;
+    //int size;
 
-    Sunflower(Point position, int size) {
-        super(position, size);
+    Sunflower(Point position, int size, Window window) {
+        super(position, size, window);
         this.size = size;
         this.position = position;
         this.setBackground(Color.yellow);
@@ -21,7 +21,30 @@ public class Sunflower extends Flower{
 
     @Override
     public void bloom() {
-        
+        this.setBackground(Color.YELLOW);
+        if ((int) (Math.random() * 100) == 0) {
+            spread();
+        }
+    }
+
+    @Override
+    public void seedAction() {
+
+    }
+
+    @Override
+    public void seedlingAction() {
+
+    }
+
+    @Override
+    public void juvenileAction() {
+
+    }
+
+    @Override
+    public void deadAction() {
+
     }
 
     @Override
@@ -30,7 +53,7 @@ public class Sunflower extends Flower{
         Sunflower[] children = new Sunflower[spreadNum];
         for(int i = 0; i < spreadNum; i++) {
             Point newPoint = radius.getRandomPoint();
-            children[i] = new Sunflower(newPoint, size);    //Will immediately go out of scope for now
+            children[i] = new Sunflower(newPoint, size, window);    //Will immediately go out of scope for now
         }
     }
 }
