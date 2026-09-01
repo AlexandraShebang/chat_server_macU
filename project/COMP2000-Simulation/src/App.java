@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Window window = new Window();
 
         int delay = 50; //Refresh 20 times per second
