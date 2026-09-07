@@ -9,17 +9,18 @@ public class Controller {
 
         }
     };
-    public int timer() { //thought this could be useful to keep track of time across the simulation
-        int t = 24; //seperate value so it is easier when adjusting the rate at which time passes 
-        int hours = 0;
-        for (int i = 0; i < t; i++) {
-            hours++;
+
+//counts out the number of seconds in a day
+    public int timer() { //if you can figure out a better  way to do this please feel free to implement it
+        int time = 0;
+        for (int i = 0; i < 86400; i++) {
+            time++;
         }
-        return hours;
+        return time;
     }
 
     public boolean daytime() { //returns true if its day, false if not
-        int gethours = timer();
+        int gethours = timer()/3600; //3600 seconds in an hour
         int dawn = 6; //adjust this if you need to alter the time at which the sun rises
         int dusk = 18; //adjust this if you need to alter the time at which the sun sets
         if (gethours <= dawn && gethours > dusk) {
@@ -28,4 +29,6 @@ public class Controller {
         }
         return false;
     }
+
+    public 
 }
