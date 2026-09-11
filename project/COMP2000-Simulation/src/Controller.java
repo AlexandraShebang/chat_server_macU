@@ -1,5 +1,4 @@
 
-import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -9,10 +8,9 @@ import javax.swing.Timer;
 public class Controller {
     private Window window;
 
-    public Controller(Window window){
-        this.window=window;
+    public Controller (Window window){
+        this.window= window;
 
-        //Timer to advance weather every 10 seconds
         Timer skyTimer = new Timer(10000, new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e){
@@ -21,5 +19,9 @@ public class Controller {
         });
         skyTimer.start();
     }
+    public ActionListener taskPerformer = new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
 
+        }
+    };
 }
