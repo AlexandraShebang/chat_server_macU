@@ -1,14 +1,27 @@
-import java.awt.*;
+import growables.plant.flower.sunflower.Sunflower;
+import growables.plant.weed.Weed;
+import java.awt.Point;
+import placed_objects.Patch;
+import supplementary.Window;
 
 public class App {
     public static void main(String[] args) {
         Window window = new Window();
-        Controller controller = new Controller(window);// Starts controller and weather timer
-        int delay = 50; //Refresh 20 times per second   (huh??? twenty? how? it's initialised to fifty, did you mean 40? - Allie) 
-        //TODO: needs refresh rate code here or in controller - Allie
-        //nm did it in controller, ignore the above - Allie
+        
+        Patch<Sunflower> p = new Patch<>(100, new Point(200, 200));
 
+        window.addToGround(p);
+        
+        Sunflower sf1 = new Sunflower(new Point(200, 200), window.getSky(), window.getGround());
+        window.addToGround(sf1);
 
-        new Sunflower(new Point(200, 200), window);
+        sf1.givePatch(p);
+
+        Sunflower sf2 = new Sunflower(new Point(1000, 500), window.getSky(), window.getGround());
+        Weed w = new Weed(new Point(600, 350), window.getSky(), window.getGround());
+        
+        sf2.givePatch(p);
+        window.addToGround(sf2);
+        window.addToGround(w);
     }
 }

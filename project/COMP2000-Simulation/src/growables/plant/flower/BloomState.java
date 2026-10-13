@@ -1,0 +1,32 @@
+package growables.plant.flower;
+
+import growables.plant.*;
+import java.awt.*;
+
+public class BloomState implements PlantState{
+    public static final String NAME = "BLOOMING";
+
+    Flower flower;
+
+    public BloomState(Flower flower) {
+        this.flower = flower;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        flower.setBackground(Color.RED);
+    }
+
+    @Override
+    public void checkChange(long lifespan) {
+        if(lifespan > flower.growthDelay * 4) {
+            flower.state = flower.deadState;
+        }
+        flower.bloom();
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+}

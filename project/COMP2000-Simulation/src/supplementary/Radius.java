@@ -1,4 +1,5 @@
-import java.awt.Point;
+package supplementary;
+import java.awt.*;
 
 public class Radius {
     int minX;
@@ -6,7 +7,7 @@ public class Radius {
     int minY;
     int maxY;
 
-    Radius(Point center, int radius) {
+    public Radius(Point center, int radius) {
         minX = (int) center.getX() - radius;
         maxX = (int) center.getX() + radius;
 
@@ -15,10 +16,14 @@ public class Radius {
     }
 
     //To be completed
-    Point getRandomPoint() {
+    public Point getRandomPoint() {
         int x = (int) ((Math.random() * (maxX - minX)) + minX);
         int y = (int) ((Math.random() * (maxY - minY)) + minY);
         
         return new Point(x, y);
+    }
+
+    public boolean isPointInRadius(Point p) {
+        return(p.x >= minX && p.x <= maxX && p.y >= minY && p.y <= maxY);
     }
 }
