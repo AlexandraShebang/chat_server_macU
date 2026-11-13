@@ -3,10 +3,10 @@ package growables.plant.flower;
 import growables.plant.*;
 import java.awt.*;
 
-public class BloomState implements PlantState{
+public class BloomState implements PlantState {
     public static final String NAME = "BLOOMING";
 
-    Flower flower;
+    private final Flower flower;
 
     public BloomState(Flower flower) {
         this.flower = flower;
@@ -19,8 +19,8 @@ public class BloomState implements PlantState{
 
     @Override
     public void checkChange(long lifespan) {
-        if(lifespan > flower.growthDelay * 4) {
-            flower.state = flower.deadState;
+        if(lifespan > flower.getGrowthDelay() * 4) {
+            flower.transitionTo(flower.getDeadState());
         }
         flower.bloom();
     }

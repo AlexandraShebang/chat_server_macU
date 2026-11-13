@@ -1,11 +1,12 @@
 package placed_objects.sky;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import supplementary.Window;
 
 public class NightState implements SkyState {
     public static final String NAME = "NIGHT";
-    Sky sky;
+    private final Sky sky;
 
     public NightState(Sky sky) {
         this.sky = sky;
@@ -15,16 +16,14 @@ public class NightState implements SkyState {
     public void paintComponent(Graphics g) {
         sky.setBackground(Color.BLACK);
         g.setColor(Color.WHITE);
-        double p = (((double) sky.hour)/12000) - 1;
+        double p = (((double) sky.getHour()) / 12000) - 1;
         g.fillOval((int) (p * (double) Window.WIN_WIDTH) - 50, 0, 50, 50);
     }
 
     @Override
     public void checkChange() {
-        if(sky.hour < 12000) {
-            //Change to day
-            sky.state = sky.sunnyState;
-            sky.notifyObservers();
+        if(sky.getHour() < 12000) {
+            sky.transitionTo(sky.getSunnyState());
         }
     }
 

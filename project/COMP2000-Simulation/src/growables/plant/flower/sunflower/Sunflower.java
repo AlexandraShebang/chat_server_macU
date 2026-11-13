@@ -1,34 +1,40 @@
 package growables.plant.flower.sunflower;
+
 import exceptions.InvalidPositionException;
 import exceptions.ObjectLimitExceededException;
 import exceptions.OutOfPatchBoundsException;
-import growables.plant.flower.*;
-import java.awt.*;
+import growables.plant.flower.Flower;
+import java.awt.Point;
 import placed_objects.Ground;
 import placed_objects.Patch;
 import placed_objects.sky.Sky;
 import supplementary.Radius;
 
+/**
+ * Represents a Sunflower that relies on sunny weather to bloom and spread.
+ */
 public class Sunflower extends Flower {
-    int spreadNum = 1;
-    int growthDelay = 5000;
-    static final int SIZE = 50;
-    String environmentState;
-    Patch<Sunflower> patch;
+    public static final int SIZE = 50;
+    
+    private int spreadNum = 1;
+    private Patch<Sunflower> patch;
+    private String environmentState;
 
     public Sunflower(Point position, Sky sky, Ground ground) {
         super(position, SIZE, sky, ground);
-        super.growthDelay = growthDelay;
+        
+        setSeedState(new SunflowerSeedState(this));
+        setJuvenileState(new SunflowerJuvenileState(this));
+        setAdultState(new SunflowerAdultState(this));
+        setBloomState(new SunflowerBloomState(this));
 
-        super.seedState = new SunflowerSeedState(this);
-        super.juvenileState = new SunflowerJuvenileState(this);
-        super.adultState = new SunflowerAdultState(this);
-        super.bloomState = new SunflowerBloomState(this);
-
-        super.state = seedState;
-
-        environmentState = sky.getState();
+        transitionTo(getSeedState());
+        this.environmentState = sky.getState();
     }
+
+    public String getEnvironmentState() { return environmentState; }
+    public Patch<Sunflower> getPatch() { return patch; }
+    public void setPatch(Patch<Sunflower> patch) { this.patch = patch; }
 
     @Override
     public void prepareForRemoval() {
@@ -45,29 +51,29 @@ public class Sunflower extends Flower {
     }
 
     @Override
-    public void update(String timeState, int hour){
-        environmentState = timeState;
+    public void update(String timeState, int hour) {
+        this.environmentState = timeState;
     }
 
     @Override
     public void increaseSpreadNum(double factor) {
-        spreadNum = (int) factor * spreadNum;
+        this.spreadNum = (int) factor * spreadNum;
     }
 
     @Override
-    //Increasing a sunflower's lifespan actually increases the time it spends as an adult/blooming
     public void increaseLifespan(double factor) {
-        bloomTime *= factor;
+        setBloomTime((int)(getBloomTime() * factor));
     }
 
     @Override
     public void spread() {
-        Radius radius = new Radius(position, spreadRadius);
+        // Assume default spread radius is 100 as per your original design
+        Radius radius = new Radius(getPosition(), 100); 
         for(int i = 0; i < spreadNum; i++) {
             Point newPoint = radius.getRandomPoint();
             try {
-                Sunflower child = new Sunflower(newPoint, sky, ground);
-                ground.addGrowable(child);
+                Sunflower child = new Sunflower(newPoint, getSky(), getGround());
+                getGround().addGrowable(child);
                 if(patch != null) {
                     child.givePatch(patch);
                 } else {
@@ -77,8 +83,6 @@ public class Sunflower extends Flower {
                 System.out.println("Stopped OOB Sunflower");
             } catch(ObjectLimitExceededException e) {
                 System.out.println("Too many objects, cannot add sunflower");
-            } catch(OutOfPatchBoundsException e) {
-                //Could not add child to patch
             }
         }
     }
@@ -86,33 +90,28 @@ public class Sunflower extends Flower {
     public void givePatch(Patch<Sunflower> p) {
         try {
             p.addToPatch(this);
-            patch = p;
+            this.patch = p;
         } catch (OutOfPatchBoundsException e) {
             checkPatchCreate();
         }
-            
     }
 
     public void checkPatchCreate() {
         System.out.println("Chancing");
         if(patch == null && (int) (Math.random() * 10) == 0) {
             System.out.println("Creating patch");
-            patch = new Patch<>(100, position);
-            ground.addPatch(patch);
-            patch.addToPatch(this);
+            patch = new Patch<>(100, getPosition());
+            getGround().addPatch(patch);
+            try {
+                patch.addToPatch(this);
+            } catch (OutOfPatchBoundsException e) {
+                // Ignored if bounds fail immediately on creation
+            }
         }
     }
 
     @Override
     public String toString() {
-        return  ("Pos: " + position.x + ", " + position.y);
-    }
-
-    public void setGrowthDelay(int growthDelay) {
-        this.growthDelay = growthDelay;
-    }
-
-    public int getGrowthDelay() {
-        return growthDelay;
+        return ("Pos: " + getPosition().x + ", " + getPosition().y);
     }
 }

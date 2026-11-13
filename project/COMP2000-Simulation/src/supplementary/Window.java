@@ -8,16 +8,19 @@ import placed_objects.Ground;
 import placed_objects.Patch;
 import placed_objects.sky.Sky;
 
+/**
+ * Main application window holding the environment panels.
+ */
 public class Window extends JFrame{
     //Window of the application
     //Defines screenspace
 
-    public static int WIN_WIDTH = 1200;
-    public static int WIN_HEIGHT = 900;
+    public static final int WIN_WIDTH = 1200;
+    public static final int WIN_HEIGHT = 900;
+    
     private final Sky sky;
     private final Ground ground;
-
-    Timer timer;
+    private final Timer timer;
 
     public Window() {
         sky = new Sky();

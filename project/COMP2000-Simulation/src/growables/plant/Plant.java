@@ -4,61 +4,125 @@ import growables.Growable;
 import java.awt.*;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.swing.*;
 import placed_objects.Ground;
 import placed_objects.sky.Sky;
 import placed_objects.sky.SkyObserver;
 import supplementary.Window;
 
-public abstract class Plant extends JPanel implements Growable, SkyObserver{
-    public PlantState seedState;
-    public PlantState seedlingState;
-    public PlantState juvenileState;
-    public PlantState adultState;
-    public PlantState deadState;
+/**
+ * Represents a basic plant entity in the ecosystem.
+ */
+public abstract class Plant extends JPanel implements Growable, SkyObserver {
+    public static final int MAX_SIZE = 150;
 
-    public PlantState state;
+    private PlantState seedState;
+    private PlantState seedlingState;
+    private PlantState juvenileState;
+    private PlantState adultState;
+    private PlantState deadState;
+
+    private PlantState state;
     
-    Instant startTime;
-    public int size = 60;
-    public Point position;
-    public Sky sky;
-    public Ground ground;
+    private final Instant startTime;
+    private int size = 60;
+    private Point position;
+    private final Sky sky;
+    private final Ground ground;
 
-    public int growthDelay = 5000;      //How long between growth states in milliseconds
-    public int spreadRadius;     //How far a plant can spread its seeds
-    public int fightingPower = 5; //Scaled from 0 to 10 where
-    public boolean fighting = false;
+    private int growthDelay = 5000;
+    private int spreadRadius;
+    private int fightingPower = 5;
+    private boolean fighting = false;
 
     public Plant(Point p, int size, Sky sky, Ground ground) {
-        seedState = new SeedState(this);
-        seedlingState = new SeedlingState(this);
-        juvenileState = new JuvenileState(this);
-        adultState = new AdultState(this);
-        deadState = new DeadState(this);
+        this.seedState = new SeedState(this);
+        this.seedlingState = new SeedlingState(this);
+        this.juvenileState = new JuvenileState(this);
+        this.adultState = new AdultState(this);
+        this.deadState = new DeadState(this);
 
-        state = seedState;
-
+        this.state = seedState;
         this.sky = sky;
         this.ground = ground;
-        startTime = Instant.now();
-        position = p;
-        spreadRadius = 100;
-        if(position == null) {
+        this.startTime = Instant.now();
+        this.spreadRadius = 100;
+        
+        if (p == null) {
             throw new InvalidPositionException("Position is null");
-        } else if (position.x > Window.WIN_WIDTH || position.x < 0 || position.y < 0 || position.y > Window.WIN_HEIGHT/4*3) {
-            throw new InvalidPositionException("Position: " + position.x + ", " + position.y);
+        } else if (p.x > Window.WIN_WIDTH || p.x < 0 || p.y < 0 || p.y > Window.WIN_HEIGHT/4*3) {
+            throw new InvalidPositionException("Position: " + p.x + ", " + p.y);
         }
 
-        this.position = p;
-        this.setBounds(position.x, position.y, size, size);
-
-        //Check if overlapping with other growables
-        
-
+        this.position = new Point(p);
+        this.size = Math.min(Math.max(size, 0), MAX_SIZE);
+        this.setBounds(position.x, position.y, this.size, this.size);
         this.setBackground(Color.darkGray);
         sky.registerObserver(this);
     }
+
+    /**
+     * Safely transitions the plant to a new state.
+     * Made public to allow State classes in sub-packages to trigger transitions.
+     * 
+     * @param next the PlantState to transition to
+     */
+    public void transitionTo(PlantState next) {
+        this.state = Objects.requireNonNull(next, "Target state cannot be null");
+    }
+
+    /**
+     * Grows the plant by a specified delta, clamped to MAX_SIZE.
+     * 
+     * @param delta the amount to grow by
+     */
+    protected void grow(int delta) {
+        this.size = Math.max(0, Math.min(this.size + delta, MAX_SIZE));
+        this.setBounds(position.x, position.y, this.size, this.size);
+    }
+
+    @Override
+    public Point getPosition() {
+        return new Point(position);
+    }
+
+    public PlantState getSeedState() { return seedState; }
+    protected void setSeedState(PlantState s) { this.seedState = s; }
+    
+    public PlantState getSeedlingState() { return seedlingState; }
+    protected void setSeedlingState(PlantState s) { this.seedlingState = s; }
+    
+    public PlantState getJuvenileState() { return juvenileState; }
+    protected void setJuvenileState(PlantState s) { this.juvenileState = s; }
+    
+    public PlantState getAdultState() { return adultState; }
+    protected void setAdultState(PlantState s) { this.adultState = s; }
+    
+    public PlantState getDeadState() { return deadState; }
+    protected void setDeadState(PlantState s) { this.deadState = s; }
+
+    public int getGrowthDelay() { return growthDelay; }
+    protected void setGrowthDelay(int delay) { this.growthDelay = delay; }
+    
+    public Sky getSky() { return sky; }
+    public Ground getGround() { return ground; }
+
+    @Override
+    public int getFightingPower() { return fightingPower; }
+    public void setFightingPower(int power) { this.fightingPower = power; }
+
+    @Override
+    public boolean getFighting() { return fighting; }
+    
+    @Override
+    public void setFighting(boolean fighting) { this.fighting = fighting; }
+
+    @Override
+    public String getState() { return state.getName(); }
+
+    @Override
+    public Rectangle getHitbox() { return this.getBounds(); }
 
     @Override
     public Growable isColliding() {
@@ -72,26 +136,19 @@ public abstract class Plant extends JPanel implements Growable, SkyObserver{
     }
 
     @Override
-    public void prepareForRemoval() {
-        
-    }
+    public void prepareForRemoval() {}
 
     @Override
     public void fightAgainst(Growable opponent) {
-        System.out.println("Fighting");
-        fighting = true;
+        setFighting(true);
         opponent.setFighting(true);
         int opponentPower = opponent.getFightingPower();
-        int outcome = fightingPower - opponentPower;
-        // Base chance to win 50%
-        // add 10% * difference in fighting power
+        int outcome = getFightingPower() - opponentPower;
         double victoryChance = 0.5 + 0.1 * outcome;
         if(Math.random() <= victoryChance) {
-            //This plant wins, opponent dies
             opponent.loseFight();
-            fighting = false;
+            setFighting(false);
         } else {
-            //This plant loses
             loseFight();
             opponent.setFighting(false);
         }
@@ -99,13 +156,7 @@ public abstract class Plant extends JPanel implements Growable, SkyObserver{
 
     @Override
     public void loseFight() {
-        //Mark this plant for deletion
-        state = deadState;
-    }
-
-    @Override
-    public int getFightingPower() {
-        return fightingPower;
+        transitionTo(deadState);
     }
 
     public boolean isColliding(Growable g) {
@@ -113,19 +164,9 @@ public abstract class Plant extends JPanel implements Growable, SkyObserver{
     }
 
     @Override
-    public boolean getFighting() {
-        return fighting;
-    }
-
-    @Override
-    public void setFighting(boolean state) {
-        fighting = state;
-    }
-
-    @Override
     public void tick() {
         Growable g = isColliding();
-        if(g != null && !fighting && !g.getFighting()) {
+        if(g != null && !getFighting() && !g.getFighting()) {
           fightAgainst(g);  
         }
 
@@ -144,7 +185,6 @@ public abstract class Plant extends JPanel implements Growable, SkyObserver{
     }
 
     @Override
-    //plant will by default simply increase the growth delay
     public void increaseLifespan(double factor) {
         growthDelay *= factor;
     }
@@ -156,22 +196,5 @@ public abstract class Plant extends JPanel implements Growable, SkyObserver{
     }
 
     @Override
-    public String getState() {
-        return state.getName();
-    }
-
-    @Override
-    public Point getPosition() {
-        return position;
-    }
-
-    @Override
-    public Rectangle getHitbox() {
-        return this.getBounds();
-    }
-
-    @Override
-    public String toString() {
-        return "Replace this function";
-    }
+    public String toString() { return "Plant at " + position.x + ", " + position.y; }
 }

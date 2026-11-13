@@ -1,12 +1,13 @@
 package growables.plant.flower.sunflower;
 
-import growables.plant.*;
-import java.awt.*;
+import growables.plant.PlantState;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 
-public class SunflowerJuvenileState implements PlantState{
+public class SunflowerJuvenileState implements PlantState {
     public static final String NAME = "JUVENILE";
-
-    Sunflower flower;
+    private final Sunflower flower;
 
     public SunflowerJuvenileState(Sunflower flower) {
         this.flower = flower;
@@ -14,16 +15,17 @@ public class SunflowerJuvenileState implements PlantState{
 
     @Override
     public void paintComponent(Graphics g) {
-        flower.setBounds(flower.position.x-Sunflower.SIZE/4, flower.position.y-Sunflower.SIZE/4, Sunflower.SIZE/2, Sunflower.SIZE/2);
+        Point pos = flower.getPosition();
+        flower.setBounds(pos.x - Sunflower.SIZE/4, pos.y - Sunflower.SIZE/4, Sunflower.SIZE/2, Sunflower.SIZE/2);
         g.setColor(new Color(2, 184, 9));
         g.fillOval(0, 0, flower.getBounds().width, flower.getBounds().height);
     }
 
     @Override
     public void checkChange(long lifespan) {
-        flower.fightingPower = 4;
-        if(lifespan > flower.growthDelay * 3) {
-            flower.state = flower.adultState;
+        flower.setFightingPower(4);
+        if(lifespan > flower.getGrowthDelay() * 3) {
+            flower.transitionTo(flower.getAdultState());
         }
     }
 
