@@ -1,35 +1,34 @@
 package placed_objects.sky;
+
 import java.awt.*;
 import java.time.*;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import supplementary.Window;
 
-public class Sky extends JPanel implements SkySubject{
-    SkyState sunnyState;
-    SkyState nightState;
 
-    SkyState state;
+public class Sky extends JPanel implements SkySubject {
+    private final SkyState sunnyState;
+    private final SkyState nightState;
+    private SkyState state;
 
-    public Instant startTime;
-    public long dayTime;
-    public int hour;    //Divide by 1000 for the hour
+    private final Instant startTime;
+    private long dayTime;
+    private int hour;    
 
     private final ArrayList<SkyObserver> observers;
 
     public Sky() {
-        sunnyState = new SunnyState(this);
-        nightState = new NightState(this);
-        state = sunnyState;
+        this.sunnyState = new SunnyState(this);
+        this.nightState = new NightState(this);
+        this.state = sunnyState;
 
-        observers = new ArrayList<>();
-
-        startTime = Instant.now();
+        this.observers = new ArrayList<>();
+        this.startTime = Instant.now();
         this.setPreferredSize(new Dimension(Window.WIN_WIDTH, Window.WIN_HEIGHT/4));
     }
 
     public void tick() {
-        //1 real-life second = 1 hour, 1 minute = ~17ms
         dayTime = Duration.between(startTime, Instant.now()).toMillis();
         hour = (int) ((dayTime % 24000));
         state.checkChange();
@@ -37,19 +36,24 @@ public class Sky extends JPanel implements SkySubject{
         repaint();
     }
 
+    void transitionTo(SkyState next) {
+        this.state = next;
+        notifyObservers();
+    }
+
+    public int getHour() { return hour; }
+    public SkyState getSunnyState() { return sunnyState; }
+    public SkyState getNightState() { return nightState; }
+
     public String getState() {
         return state.getName();
     }
 
     @Override
-    public void registerObserver(SkyObserver o) {
-        observers.add(o);
-    }
+    public void registerObserver(SkyObserver o) { observers.add(o); }
 
     @Override
-    public void removeObserver(SkyObserver o) {
-        observers.remove(o);
-    }
+    public void removeObserver(SkyObserver o) { observers.remove(o); }
 
     @Override
     public void notifyObservers() {

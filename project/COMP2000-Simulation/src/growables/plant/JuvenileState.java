@@ -2,10 +2,10 @@ package growables.plant;
 
 import java.awt.*;
 
-public class JuvenileState implements PlantState{
+public class JuvenileState implements PlantState {
     public static final String NAME = "JUVENILE";
 
-    Plant plant;
+    private final Plant plant;
 
     public JuvenileState(Plant plant) {
         this.plant = plant;
@@ -18,9 +18,9 @@ public class JuvenileState implements PlantState{
 
     @Override
     public void checkChange(long lifespan) {
-        plant.fightingPower = 4;
-        if(lifespan > plant.growthDelay * 3) {
-            plant.state = plant.adultState;
+        plant.setFightingPower(4);
+        if(lifespan > plant.getGrowthDelay() * 3) {
+            plant.transitionTo(plant.getAdultState());
         }
     }
 

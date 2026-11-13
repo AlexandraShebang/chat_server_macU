@@ -2,10 +2,10 @@ package growables.plant;
 
 import java.awt.*;
 
-public class DeadState implements PlantState{
+public class DeadState implements PlantState {
     public static final String NAME = "DEAD";
 
-    Plant plant;
+    private final Plant plant;
 
     public DeadState(Plant plant) {
         this.plant = plant;
@@ -18,7 +18,7 @@ public class DeadState implements PlantState{
 
     @Override
     public void checkChange(long lifespan) {
-        plant.fightingPower = 0;
+        plant.setFightingPower(0);
     }
 
     @Override

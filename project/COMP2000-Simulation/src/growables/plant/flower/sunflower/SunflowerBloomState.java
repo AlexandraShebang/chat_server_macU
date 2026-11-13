@@ -1,12 +1,12 @@
 package growables.plant.flower.sunflower;
 
-import growables.plant.*;
-import java.awt.*;
+import growables.plant.PlantState;
+import java.awt.Color;
+import java.awt.Graphics;
 
-public class SunflowerBloomState implements PlantState{
+public class SunflowerBloomState implements PlantState {
     public static final String NAME = "BLOOMING";
-
-    Sunflower flower;
+    private final Sunflower flower;
 
     public SunflowerBloomState(Sunflower flower) {
         this.flower = flower;
@@ -22,15 +22,14 @@ public class SunflowerBloomState implements PlantState{
 
     @Override
     public void checkChange(long lifespan) {
-        flower.fightingPower = 5;
-        if(lifespan > flower.growthDelay * flower.bloomTime) {
-            flower.state = flower.deadState;
-        } else if(flower.environmentState.equals("SUNNY")) {
+        flower.setFightingPower(5);
+        if(lifespan > flower.getGrowthDelay() * flower.getBloomTime()) {
+            flower.transitionTo(flower.getDeadState());
+        } else if("SUNNY".equals(flower.getEnvironmentState())) {
             flower.bloom();
         } else {
-            flower.state = flower.adultState;
+            flower.transitionTo(flower.getAdultState());
         }
-        
     }
 
     @Override

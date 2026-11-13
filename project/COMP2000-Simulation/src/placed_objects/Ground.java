@@ -8,9 +8,9 @@ import javax.swing.*;
 import supplementary.Window;
 
 public class Ground extends JPanel{
-    static final int MAX_OBJECTS = 512;
-    final ArrayList<Growable> growables;
-    final ArrayList<Patch<? extends Growable>> patches;
+    private static final int MAX_OBJECTS = 512;
+    private final ArrayList<Growable> growables;
+    private final ArrayList<Patch<? extends Growable>> patches;
 
     public Ground() {
         this.setPreferredSize(new Dimension(Window.WIN_WIDTH, Window.WIN_HEIGHT/4*3));
@@ -24,7 +24,6 @@ public class Ground extends JPanel{
         this.addContainerListener(new ContainerAdapter() {
             @Override
             public void componentAdded(ContainerEvent e) {
-                //Notify observers
             }
         });
     }
@@ -63,7 +62,6 @@ public class Ground extends JPanel{
     }
 
     public ArrayList<Growable> getGrowables() {
-        //Create a new copy of the ArrayList to prevent concurrent modification
         return new ArrayList<>(growables);
     }
 

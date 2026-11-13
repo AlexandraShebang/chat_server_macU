@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import javax.swing.*;
 import supplementary.Radius;
 
+
 public class Patch<T extends Growable> extends JPanel{
-    //Within a small area, growable objects of type T are more likely to spread seeds
-    Radius patchArea;
-    Container parent;  //A patch can only be placed on the ground
-    ArrayList<T> collection;
+    private final Radius patchArea;
+    private Container parent;  //A patch can only be placed on the ground
+    private final ArrayList<T> collection;
     
     public Patch(int radius, Point position) {
         patchArea = new Radius(position, radius);
@@ -29,7 +29,6 @@ public class Patch<T extends Growable> extends JPanel{
         return collection.isEmpty();
     }
 
-    //When this component added to a container, make sure it is of type ground
     @Override
     public void addNotify() throws InvalidParentException {
         super.addNotify();
